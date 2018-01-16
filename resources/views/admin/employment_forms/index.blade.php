@@ -21,12 +21,12 @@
                 <tbody>
                     @foreach($employments as $employment)
                         <tr class="{{$employment->form_type =='fisa_update'?'bg-info':''}}">
-                            <td>{{$employment->sheet_id}}</td>
+                            <td>{{$employment->id}}</td>
                             <td>
                                 <a href="{{route('employment_forms.show',$employment->id)}}">{{$employment->employee_name}}</a>
                             </td>
                             <td>
-                                {{$employment->employee_manager}}
+                                {{$employment->manager->name}}
                             </td>
                             <td>
                                 {{$employment->start_date}}
@@ -34,23 +34,34 @@
                             <td>
                                 {{$employment->status}}
                             </td>
+
                             <td>
-                                @if($employment->form_type == 'fisa_in')
-                                <a href="{{route('employment_forms.update_form',$employment->sheet_id)}}" class="btn btn-xs btn-primary">update</a>
-                                    @endif
+                                @if($employment->status != 'open')
+                                <a href="#" class="btn btn-xs btn-primary">update</a>
+                                    @else
+                                    <a href="#" class="btn btn-xs btn-primary disabled">update</a>
+                                @endif
+                            </td>
+
+                            <td>
+
+                                <a href="#" class="btn btn-xs btn-warning">out</a>
+
                             </td>
                             <td>
-                                @if($employment->form_type == 'fisa_in')
-                                <a href="{{route('employment_forms.out',$employment->sheet_id)}}" class="btn btn-xs btn-warning">out</a>
-                                    @endif
+                                <a href="{{route('employment_forms.action',['id'=>$employment->id,'action'=>'in procesare'])}}">proces</a>
+                                |
+                                <a href="{{route('employment_forms.action',['id'=>$employment->id,'action'=>'open'])}}">open</a>
+                                |
+                                <a href="{{route('employment_forms.action',['id'=>$employment->id,'action'=>'close'])}}">close</a>
                             </td>
                             <td>
-                                @if($employment->form_type == 'fisa_in')
-                                    <a href="" class="btn btn-xs btn-info">alocare</a>
-                                    @endif
-                            </td>
-                            <td>
+                                @if($employment->status == 'open')
                                 <a href="{{route('employment_forms.edit',$employment->id)}}" class="btn btn-xs btn-success">Edit</a>
+                                    @else
+                                <a href="{{route('employment_forms.edit',$employment->id)}}" class="btn btn-xs btn-success disabled">Edit</a>
+                                @endif
+
                             </td>
                             <td>
                                 {!! Form::open(['method'=>'DELETE','action'=>['EmploymentFormsController@destroy',$employment->id],'onsubmit'=>'return confirm("are you sure ?")']) !!}

@@ -15,7 +15,7 @@ class UsersTableSeeder extends Seeder
         //
         $user = App\User::create([
             'name' => 'Chirill gaibu',
-            'email' => 'mail@mail.ro',
+            'email' => 'chirill.gaibu@lugera.ro',
             'password' => bcrypt('isoscel'),
             'status' => 1,
         ]);
@@ -24,5 +24,6 @@ class UsersTableSeeder extends Seeder
             'avatar'=>'/uploads/avatars/1.png',
             'about'=>'admin',
         ]);
+
     }
 }

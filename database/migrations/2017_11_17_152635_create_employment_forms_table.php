@@ -15,11 +15,11 @@ class CreateEmploymentFormsTable extends Migration
     {
         Schema::create('employment_forms', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('sheet_id')->unsigned();
-            $table->integer('manager_id')->unsigned();
+            //$table->integer('sheet_id')->unsigned();
+            $table->integer('user_id')->unsigned()->index()->nullable(); //pentru manager
             $table->string('form_applicant')->nullable();
             $table->string('status')->nullable();
-            $table->string('form_type')->nullable();
+            //$table->string('form_type')->nullable();
             $table->string('employer_name')->nullable();
             $table->string('location')->nullable();
             $table->string('department')->nullable();

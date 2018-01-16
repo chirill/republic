@@ -34,6 +34,8 @@ Route::group(['prefix'=>'admin','middleware'=>'auth'],function (){
     Route::post('users/restore/{id}', 'UsersController@restore')->name('users.restore');
     Route::resource('users','UsersController');
 
+    Route::resource('companies','CompanyController');
+
     Route::resource('locations','LocationsController');
     Route::resource('roles','RolesController');
     Route::resource('lotus_groups','LotusGroupsController');
@@ -49,8 +51,10 @@ Route::group(['prefix'=>'admin','middleware'=>'auth'],function (){
     Route::post('employment_forms/update_store', 'EmploymentFormsController@update_store')->name('employment_forms.update_store');
     Route::get('employment_forms/out_form/{id?}', 'EmploymentFormsController@out')->name('employment_forms.out');
     Route::post('employment_forms/out_store', 'EmploymentFormsController@out_store')->name('employment_forms.store');
+    Route::get('employment_forms/action/{id}/{action}','EmploymentFormsController@action')->name('employment_forms.action');
 
     Route::resource('employment_forms','EmploymentFormsController');
+
 
 
 

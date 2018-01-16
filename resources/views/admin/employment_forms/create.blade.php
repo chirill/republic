@@ -7,19 +7,14 @@
         <div class="panel-body">
             {!! Form::open(['method'=>'POST','action'=>'EmploymentFormsController@store']) !!}
             {!! Form::hidden('form_applicant',Auth::user()->name) !!}
-            {!! Form::hidden('status','neprocesat') !!}
-            {!! Form::hidden('form_type','fisa_in') !!}
+            {!! Form::hidden('status','open') !!}
             <div class="row">
                 <div class="col-lg-4">
 
                     <div class="form-group{{$errors->has('employer_name')?' has-error': ''}}">
                         {!! Form::label('employer_name','Employer Name') !!}
                         {!! Form::select('employer_name',  [
-                            ''=>'Choose Employer',
-                            'lugera & makler srl'=>'Lugera & Makler SRL',
-                            'lugera & makler broker'=>'Lugera & Makler Broker',
-                            'lugera & makler payroll' => 'Lugera & Makler Payroll',
-                        ],null,['class'=>'form-control']) !!}
+                            ''=>'Choose Employer'] +$companies,null,['class'=>'form-control']) !!}
                         @if ($errors->has('employer_name'))
                             <span class="help-block">
                                 <strong>{{ $errors->first('employer_name') }}</strong>
@@ -89,12 +84,12 @@
 
 
 
-                    <div class="form-group{{ $errors->has('employee_manager')?' has-error':'' }}">
-                        {!! Form::label('employee_manager','Managej Angajator') !!}
-                        {!! Form::select('employee_manager',[''=>'selectati manager angajarot']+$users,null,['class'=>'form-control']) !!}
-                        @if($errors->has('employee_manager'))
+                    <div class="form-group{{ $errors->has('user_id')?' has-error':'' }}">
+                        {!! Form::label('user_id','Managej Angajator') !!}
+                        {!! Form::select('user_id',[''=>'selectati manager angajarot']+$users,null,['class'=>'form-control']) !!}
+                        @if($errors->has('user_id'))
                             <span class="help-block">
-                                <strong>{{$errors->first('employee_manager')}}</strong>
+                                <strong>{{$errors->first('user_id')}}</strong>
                             </span>
                         @endif
                     </div>

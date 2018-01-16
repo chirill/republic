@@ -141,6 +141,21 @@
                         <li class="{{active('users.trash')}}"><a href="{{route('users.trash')}}"><i class="fa fa-trash-o"></i> Trash</a></li>
                     </ul>
                 </li>
+                {{--Companii--}}
+                <li class="{{active('companies.*')}} treeview">
+                    <a href="#">
+                        <i class="fa fa-user"></i> <span>Companies</span>
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                            <span class="label label-primary pull-right">{{\App\Company::all()->count()}}</span>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li class="{{active('companies.index')}}"><a href="{{route('companies.index')}}"><i class="fa fa-users"></i> All Companies</a></li>
+                        <li class="{{active('companies.create')}}"><a href="{{route('companies.create')}}"><i class="fa fa-plus"></i> Add Company</a></li>
+                        {{--<li class="{{active('companies.trash')}}"><a href="{{route('companies.trash')}}"><i class="fa fa-trash-o"></i> Trash</a></li>--}}
+                    </ul>
+                </li>
                 {{--locations links--}}
                 <li class="{{active('locations.*')}} treeview">
                     <a href="#">

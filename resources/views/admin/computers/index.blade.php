@@ -30,7 +30,7 @@
                                 <a href="{{route('computers.edit',$computer->id)}}" class="btn btn-xs btn-success">Edit</a>
                             </td>
                             <td>
-                                {!! Form::open(['method'=>'DELETE','action'=>['ComputersController@destroy',$computer->id]]) !!}
+                                {!! Form::open(['method'=>'DELETE','action'=>['ComputersController@destroy',$computer->id],'onsubmit'=>'return confirm("are you sure ?")']) !!}
                                 {!! Form::submit('delete',['class'=>'btn btn-xs btn-danger']) !!}
                                 {!! Form::close() !!}
                             </td>

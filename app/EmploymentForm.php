@@ -10,11 +10,9 @@ class EmploymentForm extends Model
     //
     use SoftDeletes;
     protected $fillable = [
-        'sheet_id',
-        'manager_id',
+        'user_id',
         'form_applicant',
         'status',
-        'form_type',
         'employer_name',
         'location',
         'department',
@@ -22,7 +20,6 @@ class EmploymentForm extends Model
         'employee_name',
         'employee_role',
         'employee_signature',
-        'employee_manager',
         'start_date',
         'contract_type',
         'hours_per_day',
@@ -85,5 +82,11 @@ class EmploymentForm extends Model
         'lotus_groups'=>'array',
         'windows_groups' => 'array',
     ];
+    public function company(){
+        return $this->hasOne('App\Company');
+    }
+    public function manager(){
+        return $this->belongsTo('App\User','user_id');
+    }
 
 }

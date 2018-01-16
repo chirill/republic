@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ComputersRequest extends FormRequest
+class CompanyRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,11 +24,16 @@ class ComputersRequest extends FormRequest
     public function rules()
     {
         return [
+            'name' => 'required|min:2|max:50'
             //
-            'name'=>'required',
-            'location_id'=>'required',
-
         ];
     }
-
+    public function messages()
+    {
+        return [
+            'name.required' => 'camp obligatoriu',
+            'name.min' => 'minim 2 caractere',
+            'name.max' => 'maxim 50 caratere',
+        ];
+    }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Company;
 use App\Department;
 use App\EmploymentForm;
 use App\Http\Requests\EmploymentFormsRequest;
@@ -25,7 +26,7 @@ class EmploymentFormsController extends Controller
     public function index()
     {
         //
-        $employments = EmploymentForm::orderBy('sheet_id')->get()->all();
+        $employments = EmploymentForm::all();
 
         return view('admin.employment_forms.index',compact('employments'));
     }
@@ -38,6 +39,12 @@ class EmploymentFormsController extends Controller
     public function create()
     {
         //
+        $companies = Company::pluck('name','name')->all();
+        if(count($companies)==0){
+            Session::flash('info','Nu aveti nici o companie');
+            return redirect()->back();
+        }
+
         $users = User::pluck('name','id')->all();
         if(count($users)==0){
             Session::flash('info','Nu aveti nici un utilizator');
@@ -64,9 +71,12 @@ class EmploymentFormsController extends Controller
             return redirect()->back();
         }
         $departments = Department::pluck('name','name')->all();
+        if(count($departments)==0){
+            Session::flash('info','Nu aveti nici un departament definit');
+            return redirect()->back();
+        }
 
-
-        return view('admin.employment_forms.create',compact('locations','employee_signatures','users','lotusGroups','windowsGroup','departments'));
+        return view('admin.employment_forms.create',compact('locations','employee_signatures','users','lotusGroups','windowsGroup','departments','companies'));
     }
 
     /**
@@ -75,22 +85,14 @@ class EmploymentFormsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(EmploymentFormsRequest $request)
     {
         //
-
         if ($request->approved_acquisitions_budget == 'NU' && $request->approved_employment_budget=='NU'){
             Session::flash('error','Nu puteti angaja o persoana fara a avea bugetul aprobat');
             return redirect()->back();
         }
-        $input = $request->all();
-        $input['employee_manager'] = User::whereId($request->employee_manager)->select('name')->get()->first();
-        $input['manager_id']=$request->employee_manager;
-        $manager = User::whereId($request->employee_manager)->select('name')->get()->first();
-        $input['employee_manager']= $manager->name;
-        $employment = EmploymentForm::create($input);
-        $employment->sheet_id = $employment->id;
-        $employment->save();
+        EmploymentForm::create($request->all());
         Session::flash('success','Fisa de angajare creata cu succces');
         return redirect()->route('employment_forms.index');
     }
@@ -104,7 +106,7 @@ class EmploymentFormsController extends Controller
     public function show(EmploymentForm $employmentForm)
     {
         //
-        return view('');
+        return view('admin.employment_forms.show',compact('employmentForm'));
 
     }
 
@@ -117,6 +119,11 @@ class EmploymentFormsController extends Controller
     public function edit(EmploymentForm $employmentForm)
     {
         //
+        if($employmentForm->status == 'in procesare'){
+            Session::flash('error','Aceasta fisa este in procesare si nu mai poate fi editata');
+            return redirect()->back();
+        }
+
     }
 
     /**
@@ -161,57 +168,12 @@ class EmploymentFormsController extends Controller
         return redirect()->back();
     }
 
+    public function action($id,$action) {
+        $employmentForm = EmploymentForm::findOrFail($id);
 
-    //FUNCTIE PENTRU A CREA FISA DE UPDATE IN BAZA FISEI DE IN
-
-    public function update_form($id){
-        $employment = EmploymentForm::whereSheetId($id)->latest()->first();
-        //dd($update);
-        $lotusGroups = LotusGroups::pluck('name','name')->all();
-        if(count($lotusGroups) ==0 ){
-            Session::flash('info','you need to have at leaste 1 lotus group');
-            return redirect()->back();
-        }
-        $windowsGroup = WindowsGroup::pluck('name','name')->all();
-        $employee_signatures = LotusSignature::pluck('name','name')->all();
-        if(count($employee_signatures) ==0 ){
-            Session::flash('info','you need to have at leaste 1 lotus signature');
-            return redirect()->back();
-        }
-        $locations = Location::pluck('name','name')->all();
-        $users = User::pluck('name','id')->all();
-        $departments = Department::pluck('name','name')->all();
-        return view('admin.employment_forms_update.create',compact('departments','employment','lotusGroups','windowsGroup','employee_signatures','locations','users'));
+       $employmentForm->update(['status'=>$action]);
+       Session::flash('success','fisa setata');
+       return redirect()->back();
     }
-
-    public function update_store(Request $request){
-        if ($request->approved_acquisitions_budget == 'NU' && $request->approved_employment_budget=='NU'){
-            Session::flash('error','Nu puteti angaja o persoana fara a avea bugetul aprobat');
-            return redirect()->back();
-        }
-        $input = $request->all();
-        $input['employee_manager'] = User::whereId($request->employee_manager)->select('name')->get()->first();
-        $input['manager_id']=$request->employee_manager;
-        $manager = User::whereId($request->employee_manager)->select('name')->get()->first();
-
-        $input['employee_manager']= $manager->name;
-        EmploymentForm::create($input);
-        Session::flash('success','Fisa de angajare creata cu succces');
-        return redirect()->route('employment_forms.index');
-    }
-    public function out($id=null){
-        $employment = EmploymentForm::whereSheetId($id)->latest()->first();
-
-        $locations = Location::pluck('name','name')->all();
-        $departments = Department::pluck('name','name')->all();
-        $users = User::pluck('name','id')->all();
-        return view('admin.employment_out.create',compact('locations','departments','users','employment'));
-    }
-    public function out_store(){
-        dd(request()->all());
-        return redirect()->back();
-    }
-
-
 
 }

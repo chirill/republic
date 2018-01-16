@@ -43,7 +43,7 @@
                     </div>
 
                     {!! Form::submit('Add Computer',['class'=>'btn btn-primary']) !!}
-
+                    {!! Form::close() !!}
                 </div>
             </div>
         </div>

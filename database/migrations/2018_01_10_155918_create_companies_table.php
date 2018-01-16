@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateEmploymentUpdateFormsTable extends Migration
+class CreateCompaniesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,10 @@ class CreateEmploymentUpdateFormsTable extends Migration
      */
     public function up()
     {
-        Schema::create('employment_update_forms', function (Blueprint $table) {
+        Schema::create('companies', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('de test');
+            $table->string('name')->nullable();
+            $table->integer('location_id')->nullable()->index()->unsigned();
             $table->timestamps();
         });
     }
@@ -27,6 +28,6 @@ class CreateEmploymentUpdateFormsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('employment_update_forms');
+        Schema::dropIfExists('companies');
     }
 }
