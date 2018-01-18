@@ -123,6 +123,14 @@ class EmploymentFormsController extends Controller
             Session::flash('error','Aceasta fisa este in procesare si nu mai poate fi editata');
             return redirect()->back();
         }
+        $locations = \App\Location::pluck('name','name')->all();
+        $lotusSignature = LotusSignature::pluck('name','name')->all();
+        $users = User::pluck('name','id')->all();
+        $lotusGroups = LotusGroups::pluck('name','name')->all();
+        $windowsGroup = WindowsGroup::pluck('name','name')->all();
+        $companies = Company::pluck('name','name')->all();
+
+        return view('admin.employment_forms.edit',compact('employmentForm','locations','lotusSignature','users','lotusGroups','windowsGroup','companies'));
 
     }
 
@@ -136,6 +144,14 @@ class EmploymentFormsController extends Controller
     public function update(Request $request, EmploymentForm $employmentForm)
     {
         //
+        if ($request->approved_acquisitions_budget == 'NU' && $request->approved_employment_budget=='NU'){
+            Session::flash('error','Nu puteti angaja o persoana fara a avea bugetul aprobat');
+            return redirect()->back();
+        }
+        $employmentForm->update($request->all());
+        Session::flash('success','Fisa de angajare updatata cu succces');
+        return redirect()->route('employment_forms.index');
+
     }
 
     /**
@@ -175,5 +191,13 @@ class EmploymentFormsController extends Controller
        Session::flash('success','fisa setata');
        return redirect()->back();
     }
+
+    public function addUser(Request $request){
+        EmploymentForm::findOrFail($request->only('employmentFormId'))->first()->update($request->except('employmentFormId'));
+        Session::flash('success','Fisa a fost completata cu succes');
+        return redirect()->back();
+    }
+
+
 
 }

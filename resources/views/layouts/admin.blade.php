@@ -275,7 +275,7 @@
                     <ul class="treeview-menu">
                         <li class="{{active('employment_forms.index')}}"><a href="{{route('employment_forms.index')}}"><i class="ion ion-ios-paper"></i> Fise angajare</a></li>
                         <li class="{{active('employment_forms.create')}}"><a href="{{route('employment_forms.create')}}"><i class="fa fa-plus"></i> Add Fisa angajare</a></li>
-                        <li class="{{active('employment_forms.out')}}"><a href="{{route('employment_forms.out')}}"><i class="fa fa-plus"></i> Add Fisa OUT</a></li>
+                        <li class=""><a href=""><i class="fa fa-plus"></i> Add Fisa OUT</a></li>
                         <li class="{{active('employment_forms.trash')}}"><a href="{{route('employment_forms.trash')}}"><i class="fa fa-trash"></i> Trash Fisa angajare</a></li>
                     </ul>
                 </li>

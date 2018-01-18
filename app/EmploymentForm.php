@@ -88,5 +88,9 @@ class EmploymentForm extends Model
     public function manager(){
         return $this->belongsTo('App\User','user_id');
     }
+    public function alert($property){
+        if (empty($this->$property))
+            return 'alert alert-danger';
 
+    }
 }

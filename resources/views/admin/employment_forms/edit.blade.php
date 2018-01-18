@@ -1,25 +1,20 @@
-@extends('layouts.app')
+@extends('layouts.admin')
 @section('content')
     <div class="panel panel-{{ count($errors->all())>0?'danger':'primary' }}">
         <div class="panel-heading">
             <h2>Employment Sheet</h2>
         </div>
         <div class="panel-body">
-            {!! Form::model($employment,['method'=>'PATCH','action'=>['EmploymentController@store',$employment->id]]) !!}
+            {!! Form::model($employmentForm,['method'=>'PATCH','action'=>['EmploymentFormsController@update',$employmentForm->id]]) !!}
             {!! Form::hidden('form_applicant',Auth::user()->name) !!}
             {!! Form::hidden('status','neprocesat') !!}
-            {!! Form::hidden('form_type','fisa_in') !!}
             <div class="row">
                 <div class="col-lg-4">
 
                     <div class="form-group{{$errors->has('employer_name')?' has-error': ''}}">
                         {!! Form::label('employer_name','Employer Name') !!}
                         {!! Form::select('employer_name',  [
-                            ''=>'Choose Employer',
-                            'lugera & makler srl'=>'Lugera & Makler SRL',
-                            'lugera & makler broker'=>'Lugera & Makler Broker',
-                            'lugera & makler payroll' => 'Lugera & Makler Payroll',
-                        ],null,['class'=>'form-control']) !!}
+                            ''=>'Choose Employer'] +$companies,null,['class'=>'form-control']) !!}
                         @if ($errors->has('employer_name'))
                             <span class="help-block">
                                 <strong>{{ $errors->first('employer_name') }}</strong>
@@ -77,32 +72,29 @@
                         @endif
                     </div>
 
-                    <div class="form-group{{ $errors->has('employee_signature')?' has-error':'' }}">
-                        <lable for="employee_signature">Lotus Signature</lable>
-                        <select name="employee_signature" id="employee_signature" class="form-control">
-                            <option value="">Choose a signature</option>
-                            @foreach($lotusSignature as $signature)
-                                <option value="{{$signature->name}}" @if(old('employee_signature') == $signature->name) {{ 'selected' }} @endif>{{$signature->name}}</option>
-                            @endforeach
-                        </select>
-                        @if($errors->has('employee_signature'))
+
+
+                    <div class="form-group{{ $errors->has('lotus_groups')?' has-error':'' }}">
+                        {!! Form::label('lotus_groups','Lotus Grup') !!}
+                        {!! Form::select('lotus_groups[]',$lotusGroups,null,['class'=>'form-control select2','data-placeholder'=>'selectati grupurile de lotus','multiple'=>'multiple']) !!}
+                        @if($errors->has('lotus_groups'))
                             <span class="help-block">
-                                <strong>{{$errors->first('employee_signature')}}</strong>
-                            </span>
+                            <strong>{{$errors->first('lotus_groups')}}</strong>
+                        </span>
                         @endif
                     </div>
 
-                    <div class="form-group{{ $errors->has('employee_manager')?' has-error':'' }}">
-                        <lable for="employee_manager">Managej angajator</lable>
-                        <select name="employee_manager" id="employee_manager" class="form-control">
-                            <option value="">Choose a Manager</option>
-                            @foreach($users as $user)
-                                <option value="{{$user->name}}|{{$user->id}}" @if(old('employee_manager') == $user->name.'|'.$user->id) {{'selected'}} @endif>{{$user->name}}</option>
-                            @endforeach
-                        </select>
-                        @if($errors->has('employee_manager'))
+
+
+
+
+
+                    <div class="form-group{{ $errors->has('user_id')?' has-error':'' }}">
+                        {!! Form::label('user_id','Managej Angajator') !!}
+                        {!! Form::select('user_id',[''=>'selectati manager angajarot']+$users,null,['class'=>'form-control']) !!}
+                        @if($errors->has('user_id'))
                             <span class="help-block">
-                                <strong>{{$errors->first('employee_manager')}}</strong>
+                                <strong>{{$errors->first('user_id')}}</strong>
                             </span>
                         @endif
                     </div>
@@ -383,17 +375,17 @@
                         @endif
                     </div>
 
-                    <div class="form-group{{ $errors->has('lotus_groups')?' has-error':'' }}">
-                        {!! Form::label('lotus_groups[]','Lotus Grup') !!}<br>
-                        @foreach($lotusGroups as $group)
-                            {!! Form::checkbox('lotus_groups[]',$group,null) !!} {{$group}}<br>
-                        @endforeach
-                        @if($errors->has('lotus_groups'))
-                            <span class="help-block">
-                            <strong>{{$errors->first('lotus_groups')}}</strong>
-                        </span>
-                        @endif
-                    </div>
+                    {{--<div class="form-group{{ $errors->has('lotus_groups')?' has-error':'' }}">--}}
+                        {{--{!! Form::label('lotus_groups[]','Lotus Grup') !!}<br>--}}
+                        {{--@foreach($lotusGroups as $group)--}}
+                            {{--{!! Form::checkbox('lotus_groups[]',$group,null) !!} {{$group}}<br>--}}
+                        {{--@endforeach--}}
+                        {{--@if($errors->has('lotus_groups'))--}}
+                            {{--<span class="help-block">--}}
+                            {{--<strong>{{$errors->first('lotus_groups')}}</strong>--}}
+                        {{--</span>--}}
+                        {{--@endif--}}
+                    {{--</div>--}}
 
                     <div class="form-group{{ $errors->has('tw_consultant')?' has-error':'' }}">
                         {!! Form::label('tw_consultant','Temporary workforce consultant in lotus') !!}
@@ -435,11 +427,9 @@
                         @endif
                     </div>
 
-                    <div class="form-group{{ $errors->has('windows_groups')?' has-error':'' }}">
-                        {!! Form::label('windows_groups[]','Windows Grup') !!}<br>
-                        @foreach($windowsGroup as $group)
-                            {!! Form::checkbox('windows_groups[]',$group,null) !!} {{$group}}<br>
-                        @endforeach
+                    <div class="form-group{{ $errors->has('lotus_groups')?' has-error':'' }}">
+                        {!! Form::label('windows_groups','Grupui Windows') !!}
+                        {!! Form::select('windows_groups[]',$windowsGroup,null,['class'=>'form-control select2','multiple'=>'multiple','data-placeholder'=>'Selectati grupurile de windows','width'=>'100%']) !!}
                         @if($errors->has('windows_groups'))
                             <span class="help-block">
                             <strong>{{$errors->first('windows_groups')}}</strong>
@@ -457,7 +447,7 @@
                 <div class="row">
                     <div class="col-sm-12">
                         <div class="form-group text-center">
-                            {!! Form::submit('Create Employment Sheet',['class'=>'btn btn-primary']) !!}
+                            {!! Form::submit('Update Employment Sheet',['class'=>'btn btn-primary']) !!}
                         </div>
                     </div>
                 </div>
@@ -467,4 +457,23 @@
     </div>
 
 
+@stop
+@section('styles')
+    <link rel="stylesheet" href="{{asset('app/bower_components/select2/dist/css/select2.min.css')}}">
+
+@stop
+@section('scripts')
+    <script src="{{asset('app/bower_components/select2/dist/js/select2.full.min.js')}}"></script>
+
+    <script>
+        $(function () {
+            //Initialize Select2 Elements
+            $('.select2').select2({
+                closeOnSelect: false,
+                allowClear: true
+            })
+
+        })
+
+    </script>
 @stop

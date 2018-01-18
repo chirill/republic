@@ -15,6 +15,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
@@ -47,10 +48,12 @@ Route::group(['prefix'=>'admin','middleware'=>'auth'],function (){
     Route::get('employment_forms/trash', 'EmploymentFormsController@trash')->name('employment_forms.trash');
     Route::delete('employment_forms/kill/{id}', 'EmploymentFormsController@kill')->name('employment_forms.kill');
     Route::post('employment_forms/restore/{id}', 'EmploymentFormsController@restore')->name('employment_forms.restore');
-    Route::get('employment_forms/update_form/{id}', 'EmploymentFormsController@update_form')->name('employment_forms.update_form');
-    Route::post('employment_forms/update_store', 'EmploymentFormsController@update_store')->name('employment_forms.update_store');
-    Route::get('employment_forms/out_form/{id?}', 'EmploymentFormsController@out')->name('employment_forms.out');
-    Route::post('employment_forms/out_store', 'EmploymentFormsController@out_store')->name('employment_forms.store');
+//    Route::get('employment_forms/update_form/{id}', 'EmploymentFormsController@update_form')->name('employment_forms.update_form');
+//    Route::post('employment_forms/update_store', 'EmploymentFormsController@update_store')->name('employment_forms.update_store');
+//    Route::get('employment_forms/out_form/{id?}', 'EmploymentFormsController@out')->name('employment_forms.out');
+//    Route::post('employment_forms/out_store', 'EmploymentFormsController@out_store')->name('employment_forms.store');
+
+    Route::post('employment_forms/addUser', 'EmploymentFormsController@addUser')->name('employment_forms.addUser');
     Route::get('employment_forms/action/{id}/{action}','EmploymentFormsController@action')->name('employment_forms.action');
 
     Route::resource('employment_forms','EmploymentFormsController');
