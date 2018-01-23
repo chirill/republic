@@ -58,6 +58,11 @@ Route::group(['prefix'=>'admin','middleware'=>'auth'],function (){
 
     Route::resource('employment_forms','EmploymentFormsController');
 
+    Route::get('employment_forms_update/create2/{id}','EmploymentUpdateFormController@create2')->name('employment_forms_update/create2');
+    Route::post('employment_forms_update/initial_in','EmploymentUpdateFormController@store2')->name('employment_forms_update/initial_in');
+    Route::get('employment_forms_update/action/{id}/{action}','EmploymentUpdateFormController@action')->name('employment_forms_update.action');
+    Route::resource('employment_forms_update','EmploymentUpdateFormController');
+
 
 
 

@@ -1,11 +1,13 @@
 @extends('layouts.admin')
 @section('content')
+
     <div class="panel panel-primary">
         <div class="panel-heading">
             <h2 class="text-center">Employment</h2>
         </div>
         <div class="panel-body">
             @if(count($employments)>0)
+
             <table class="table table-bordered table-hover">
                 <thead>
                     <th>Nr</th>
@@ -37,9 +39,10 @@
 
                             <td>
                                 @if($employment->status != 'open')
-                                <a href="#" class="btn btn-xs btn-primary">update</a>
+
+                                <a href="{{route('employment_forms_update/create2',$employment->id)}}" class="btn btn-xs btn-primary">update</a>
                                     @else
-                                    <a href="#" class="btn btn-xs btn-primary disabled">update</a>
+                                    <a href="" class="btn btn-xs btn-primary disabled">update</a>
                                 @endif
                             </td>
 

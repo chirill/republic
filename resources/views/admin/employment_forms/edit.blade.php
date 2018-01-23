@@ -7,6 +7,7 @@
         <div class="panel-body">
             {!! Form::model($employmentForm,['method'=>'PATCH','action'=>['EmploymentFormsController@update',$employmentForm->id]]) !!}
             {!! Form::hidden('form_applicant',Auth::user()->name) !!}
+            {!! Form::hidden('employment_form_id',Auth::user()->name) !!}
             {!! Form::hidden('status','neprocesat') !!}
             <div class="row">
                 <div class="col-lg-4">

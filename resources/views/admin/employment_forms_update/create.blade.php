@@ -2,25 +2,25 @@
 @section('content')
     <div class="panel panel-{{ count($errors->all())>0?'danger':'primary' }}">
         <div class="panel-heading">
-            <h2>Employment Update Form</h2>
+            <h2>Employment Sheet Update</h2>
         </div>
         <div class="panel-body">
-            {!! Form::model($employment,['method'=>'POST','action'=>['EmploymentFormsController@update_store',$employment->id]]) !!}
+            {!! Form::model($employmentUpdateForm,['method'=>'POST','action'=>['EmploymentUpdateFormController@store']]) !!}
+
             {!! Form::hidden('form_applicant',Auth::user()->name) !!}
-            {!! Form::hidden('status','neprocesat') !!}
-            {!! Form::hidden('form_type','fisa_update') !!}
-            {!! Form::hidden('sheet_id',$employment->sheet_id) !!}
+            {!! Form::hidden('status','open') !!}
+            @if($employmentUpdateForm != null)
+                {!! Form::hidden('employment_form_id',$employmentUpdateForm->id) !!}
+            @else
+                {!! Form::hidden('employment_form_id',0) !!}
+            @endif
             <div class="row">
                 <div class="col-lg-4">
 
                     <div class="form-group{{$errors->has('employer_name')?' has-error': ''}}">
                         {!! Form::label('employer_name','Employer Name') !!}
                         {!! Form::select('employer_name',  [
-                            ''=>'Choose Employer',
-                            'lugera & makler srl'=>'Lugera & Makler SRL',
-                            'lugera & makler broker'=>'Lugera & Makler Broker',
-                            'lugera & makler payroll' => 'Lugera & Makler Payroll',
-                        ],null,['class'=>'form-control']) !!}
+                            ''=>'Choose Employer'] +$companies,null,['class'=>'form-control']) !!}
                         @if ($errors->has('employer_name'))
                             <span class="help-block">
                                 <strong>{{ $errors->first('employer_name') }}</strong>
@@ -89,12 +89,13 @@
                     </div>
 
 
-                    <div class="form-group{{ $errors->has('employee_manager')?' has-error':'' }}">
-                        {!! Form::label('employee_manager','Managej Angajator') !!}
-                        {!! Form::select('employee_manager',[''=>'selectati manager angajarot']+$users,$employment->manager_id,['class'=>'form-control']) !!}
-                        @if($errors->has('employee_manager'))
+
+                    <div class="form-group{{ $errors->has('user_id')?' has-error':'' }}">
+                        {!! Form::label('user_id','Managej Angajator') !!}
+                        {!! Form::select('user_id',[''=>'selectati manager angajarot']+$users,null,['class'=>'form-control']) !!}
+                        @if($errors->has('user_id'))
                             <span class="help-block">
-                                <strong>{{$errors->first('employee_manager')}}</strong>
+                                <strong>{{$errors->first('user_id')}}</strong>
                             </span>
                         @endif
                     </div>
@@ -388,7 +389,7 @@
 
                     <div class="form-group{{ $errors->has('lotus_groups')?' has-error':'' }}">
                         {!! Form::label('lotus_groups','Lotus Grup') !!}
-                        {!! Form::select('lotus_groups[]',$lotusGroups,$employment->lotus_groups,['class'=>'form-control select2','data-placeholder'=>'selectati grupurile de lotus','multiple'=>'multiple']) !!}
+                        {!! Form::select('lotus_groups[]',$lotusGroups,null,['class'=>'form-control select2','data-placeholder'=>'selectati grupurile de lotus','multiple'=>'multiple']) !!}
                         @if($errors->has('lotus_groups'))
                             <span class="help-block">
                             <strong>{{$errors->first('lotus_groups')}}</strong>
@@ -436,9 +437,9 @@
                         @endif
                     </div>
 
-                    <div class="form-group{{ $errors->has('windows_groups')?' has-error':'' }}">
+                    <div class="form-group{{ $errors->has('lotus_groups')?' has-error':'' }}">
                         {!! Form::label('windows_groups','Grupui Windows') !!}
-                        {!! Form::select('windows_groups[]',$windowsGroup,$employment->windows_groups,['class'=>'form-control select2','multiple'=>'multiple','data-placeholder'=>'Selectati grupurile de windows','width'=>'100%']) !!}
+                        {!! Form::select('windows_groups[]',$windowsGroup,null,['class'=>'form-control select2','multiple'=>'multiple','data-placeholder'=>'Selectati grupurile de windows','width'=>'100%']) !!}
                         @if($errors->has('windows_groups'))
                             <span class="help-block">
                             <strong>{{$errors->first('windows_groups')}}</strong>
@@ -473,7 +474,7 @@
                 <div class="row">
                     <div class="col-sm-12">
                         <div class="form-group text-center">
-                            {!! Form::submit('Update Employment Form',['class'=>'btn btn-primary']) !!}
+                            {!! Form::submit('Create Employment Sheet',['class'=>'btn btn-primary']) !!}
                         </div>
                     </div>
                 </div>

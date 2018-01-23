@@ -15,7 +15,7 @@ class CreateEmploymentUpdateFormsTable extends Migration
     {
         Schema::create('employment_update_forms', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('employment_form_id')->unsigned();
+            $table->integer('employment_form_id')->unsigned()->index()->nullable();
             $table->integer('user_id')->unsigned()->index()->nullable(); //pentru manager
             $table->string('form_applicant')->nullable();
             $table->string('status')->nullable();

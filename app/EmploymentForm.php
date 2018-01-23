@@ -93,4 +93,10 @@ class EmploymentForm extends Model
             return 'alert alert-danger';
 
     }
+    public function user(){
+        return $this->belongsTo('App\User','user_id');
+    }
+    public function updateFoms(){
+        return $this->hasMany('App\EmploymentUpdateForm','employment_form_id');
+    }
 }

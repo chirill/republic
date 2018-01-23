@@ -160,8 +160,42 @@
                     {!! Form::hidden('status','in procesare') !!}
                     {!! Form::submit('Add Info',['class'=>'btn btn-warning']) !!}
                     {!! Form::close() !!}
+
                 </div>
             </div>
+
+                @if(count($employmentForm->updateFoms) > 0)
+                <div class="col-md-12">
+                    <table class="table table table-bordered table-striped">
+                        <thead>
+                        <tr>
+                            <th>nume</th>
+                            <th>angajator</th>
+                            <th>status</th>
+                            <th>data</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach($employmentForm->updateFoms as $uform)
+                            <tr>
+                                <td><a href="#"></a>{{$uform->employee_name}}</td>
+                                <td>{{$uform->employee_name}}</td>
+                                <td>{{$uform->status}}</td>
+                                <td>{{$uform->created_at}}</td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+                @else
+                <div class="col-md-12">
+                    <span class="text-danger">Nu avem fise de update</span>
+                </div>
+                @endif
+
+
         </div>
+
     </div>
+
     @stop

@@ -26,9 +26,10 @@ class EmploymentFormsController extends Controller
     public function index()
     {
         //
+        $e = EmploymentForm::find(1);
         $employments = EmploymentForm::all();
 
-        return view('admin.employment_forms.index',compact('employments'));
+        return view('admin.employment_forms.index',compact('employments','e'));
     }
 
     /**
