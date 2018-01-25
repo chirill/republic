@@ -32,6 +32,10 @@ class EmploymentUpdateFormController extends Controller
         //dd($employments);
         return view('admin.employment_forms_update.index',compact('employments'));
     }
+    public function create(){
+
+    }
+
 
     /**
      * Show the form for creating a new resource.
@@ -41,13 +45,13 @@ class EmploymentUpdateFormController extends Controller
     //create2 aduce datele din fisa de in pentru a crea o noua fisa de update
     public function create2($id)
     {
-        //
-        $employmentUpdateForm = EmploymentForm::find($id)->updateFoms->last();
 
-        if ($employmentUpdateForm!=null){
-            $employmentUpdateForm->first();
+
+
+        if ($id>0){
+            $employmentUpdateForm = EmploymentForm::find($id)->updateFoms->last();
         }else{
-            $employmentUpdateForm=null;
+            $employmentUpdateForm=0;
         }
 
         $companies = Company::pluck('name','name')->all();
@@ -101,12 +105,14 @@ class EmploymentUpdateFormController extends Controller
     public function store(Request $request)
     {
         //
+        $input[]=$request->all();
+
         if($request->employment_form_id ===0){
             $employmentForm = EmploymentForm::create($request->all());
-            $input[]=$request->all();
             $input['employment_form_id']=$employmentForm->id;
         }
-        EmploymentUpdateForm::create($request->all());
+
+        EmploymentUpdateForm::create($input);
 
         return redirect()->route('employment_forms_update.index');
     }
@@ -121,7 +127,30 @@ class EmploymentUpdateFormController extends Controller
     public function show($id)
     {
         //
-        $employmentUpdateForm = EmploymentUpdateForm::find($id);
+
+        $employmentUpdateForm = EmploymentUpdateForm::find(4)->toArray();
+        $search = EmploymentUpdateForm::where('employment_form_id',2)->first()->toArray();
+
+        $collection = collect([1, 2, 3, 4, 5]);
+        $col = collect($search);
+
+        $diff = $collection->diff($col);
+
+        $diff->all();
+
+
+
+        dd($diff->all());
+
+
+        dd($em);
+        if ($search){
+            dd(get_object_vars ($employmentUpdateForm));
+            }
+
+
+        dd('ceva');
+
         return view('admin.employment_forms_update.show',compact('employmentUpdateForm'));
     }
 
@@ -200,9 +229,12 @@ class EmploymentUpdateFormController extends Controller
      * @param  \App\EmploymentUpdateForm  $employmentUpdateForm
      * @return \Illuminate\Http\Response
      */
-    public function destroy(EmploymentUpdateForm $employmentUpdateForm)
+    public function destroy(EmploymentUpdateForm $employment_forms_update)
     {
         //
+        $employment_forms_update->delete();
+        Session::flash('success','forma stearsa cu succes');
+        return redirect()->route('employment_forms_update.index');
     }
 
     public function action($id,$action) {

@@ -21,6 +21,7 @@
                     </thead>
                     <tbody>
 
+
                     @foreach($employments as $form)
                         @php($employment  = \App\EmploymentUpdateForm::where('employment_form_id',$form->id)->latest()->first())
                         <tr>
@@ -53,8 +54,8 @@
 
                             </td>
                             <td>
-                                {!! Form::open(['method'=>'DELETE','action'=>['EmploymentFormsController@destroy',$employment->id],'onsubmit'=>'return confirm("are you sure ?")']) !!}
-                                {!! Form::submit('Delete',['class'=>'btn btn-xs btn-danger']) !!}
+                                {!! Form::open(['method'=>'DELETE','action'=>['EmploymentUpdateFormController@destroy',$employment->id],'onsubmit'=>'return confirm("are you sure ?")']) !!}
+                                {!! Form::submit('Trash',['class'=>'btn btn-xs btn-danger']) !!}
                                 {!! Form::close() !!}
                             </td>
                             <td>{{$employment->created_at}}</td>
