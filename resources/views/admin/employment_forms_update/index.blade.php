@@ -24,6 +24,7 @@
 
                     @foreach($employments as $form)
                         @php($employment  = \App\EmploymentUpdateForm::where('employment_form_id',$form->id)->latest()->first())
+                        @if($employment != null)
                         <tr>
                             <td>{{$employment->id}}</td>
                             <td>
@@ -60,7 +61,7 @@
                             </td>
                             <td>{{$employment->created_at}}</td>
                         </tr>
-
+                    @endif
                     @endforeach
                     </tbody>
                 </table>

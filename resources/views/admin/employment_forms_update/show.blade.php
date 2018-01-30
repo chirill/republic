@@ -10,11 +10,11 @@
             <div class="row">
                 <div class="col-md-6">
                     <table class="table table-bordered table-striped">
-                        <tr>
+                        <tr class="{{isset($diff['employer_name']) ?"bg-fuchsia":'null'}}">
                             <th>Compania angajatoare:</th>
                             <td>{{$employmentUpdateForm->employer_name}}</td>
                         </tr>
-                        <tr>
+                        <tr  class="{{isset($diff['location']) ?"bg-fuchsia":'null'}}">
                             <th>Locatia:</th>
                             <td>{{$employmentUpdateForm->location}}</td>
                         </tr>
@@ -42,7 +42,7 @@
                             <th>Data de incepere</th>
                             <td>{{$employmentUpdateForm->start_date}}</td>
                         </tr>
-                        <tr>
+                        <tr  class="{{isset($diff['lotus_groups']) ?"bg-fuchsia":'null'}}">
                             <th>Grupuri Lotus</th>
                             <td>
                                 @foreach($employmentUpdateForm->lotus_groups as $lgrup)
@@ -50,7 +50,7 @@
                                 @endforeach
                             </td>
                         </tr>
-                        <tr>
+                        <tr class="{{isset($diff['windows_groups']) ?"bg-fuchsia":'null'}}">
                             <th>Grupuri Windows</th>
                             <td>
                                 @foreach($employmentUpdateForm->windows_groups as $wgrup)
@@ -82,6 +82,15 @@
                             <td>{{!empty($employmentUpdateForm->lotus_pass)?$employmentUpdateForm->lotus_pass:'camp necompletat'}}</td>
                         </tr>
                     </table>
+                </div>
+                <div class="col-md-6">
+                    @if($diff!=null)
+                        @foreach($diff as $key => $value)
+                            @if(!is_array($value))
+                                {{$key}}: {{$value}}<br>
+                            @endif
+                        @endforeach
+                    @endif
                 </div>
             </div>
 

@@ -31,7 +31,7 @@
                     </div>
                     <div class="form-group{{$errors->has('location_id')?' has-error':''}}">
                         {!! Form::label('location_id','Location') !!}
-                        {!! Form::select('location_id',[''=>'choose location','1'=>'bucuresti statis','2'=>'ploiesti static'],null,['class'=>'form-control']) !!}
+                        {!! Form::select('location_id',[''=>'choose location']+$locations,null,['class'=>'form-control']) !!}
                         @if($errors->has('location_id'))
                             <span class="help-block">
                                 <strong>{{$errors->first('location_id')}}</strong>

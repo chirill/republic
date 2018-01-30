@@ -178,7 +178,7 @@
                         <tbody>
                         @foreach($employmentForm->updateFoms as $uform)
                             <tr>
-                                <td><a href="#"></a>{{$uform->employee_name}}</td>
+                                <td><a href="{{route('employment_forms_update.show',$uform->id)}}">{{$uform->employee_name}}</a></td>
                                 <td>{{$uform->employee_name}}</td>
                                 <td>{{$uform->status}}</td>
                                 <td>{{$uform->created_at}}</td>

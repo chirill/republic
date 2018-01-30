@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\EmploymentForm;
 use App\EmploymentUpdateForm;
+use App\Http\Requests\EmploymentFormsRequest;
 use App\Location;
 use App\LotusGroups;
 use App\LotusSignature;
@@ -13,6 +14,7 @@ use App\WindowsGroup;
 use App\Department;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
+use Rogervila\ArrayDiffMultidimensional;
 
 class EmploymentUpdateFormController extends Controller
 {
@@ -50,6 +52,8 @@ class EmploymentUpdateFormController extends Controller
 
         if ($id>0){
             $employmentUpdateForm = EmploymentForm::find($id)->updateFoms->last();
+            if (empty($employmentUpdateForm))
+                $employmentUpdateForm = EmploymentForm::find($id)->first();
         }else{
             $employmentUpdateForm=0;
         }
@@ -102,17 +106,21 @@ class EmploymentUpdateFormController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(EmploymentFormsRequest $request)
     {
         //
         $input[]=$request->all();
 
-        if($request->employment_form_id ===0){
+
+        if($request->employment_form_id == 0){
             $employmentForm = EmploymentForm::create($request->all());
-            $input['employment_form_id']=$employmentForm->id;
+
+            $request['employment_form_id'] = $employmentForm->id;
+            $request['status'] = 'close';
+//            dd($request->all());
         }
 
-        EmploymentUpdateForm::create($input);
+        EmploymentUpdateForm::create($request->all());
 
         return redirect()->route('employment_forms_update.index');
     }
@@ -128,30 +136,17 @@ class EmploymentUpdateFormController extends Controller
     {
         //
 
-        $employmentUpdateForm = EmploymentUpdateForm::find(4)->toArray();
-        $search = EmploymentUpdateForm::where('employment_form_id',2)->first()->toArray();
+        $employmentUpdateForm = EmploymentUpdateForm::find($id);
+        $search = EmploymentUpdateForm::where('employment_form_id',$employmentUpdateForm->employment_form_id)->orderBy('created_at','desc')->get();
 
-        $collection = collect([1, 2, 3, 4, 5]);
-        $col = collect($search);
-
-        $diff = $collection->diff($col);
-
-        $diff->all();
-
+        if (count($search)>1){
+            $diff = ArrayDiffMultidimensional::compare($employmentUpdateForm->toArray(),$search[1]->toArray());
+        }else{
+            $diff=null;
+        }
 
 
-        dd($diff->all());
-
-
-        dd($em);
-        if ($search){
-            dd(get_object_vars ($employmentUpdateForm));
-            }
-
-
-        dd('ceva');
-
-        return view('admin.employment_forms_update.show',compact('employmentUpdateForm'));
+        return view('admin.employment_forms_update.show',compact('employmentUpdateForm','diff'));
     }
 
     /**
@@ -232,8 +227,8 @@ class EmploymentUpdateFormController extends Controller
     public function destroy(EmploymentUpdateForm $employment_forms_update)
     {
         //
-        $employment_forms_update->delete();
-        Session::flash('success','forma stearsa cu succes');
+        //$employment_forms_update->delete();
+        //Session::flash('success','forma stearsa cu succes');
         return redirect()->route('employment_forms_update.index');
     }
 

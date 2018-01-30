@@ -99,7 +99,7 @@
             var printCounter = 0;
 
             // Append a caption to the table before the DataTables initialisation
-            $('#example').append('<caption style="caption-side: bottom">A fictional company\'s staff table.</caption>');
+            $('#example').append('<caption style="caption-side: bottom">test function</caption>');
 
             $('#example').DataTable( {
                 dom: 'Bfrtip',

@@ -10,7 +10,7 @@
             {!! Form::hidden('form_applicant',Auth::user()->name) !!}
             {!! Form::hidden('status','open') !!}
             @if($employmentUpdateForm != null)
-                {!! Form::hidden('employment_form_id',$employmentUpdateForm->id) !!}
+                {!! Form::hidden('employment_form_id',$employmentUpdateForm->employment_form_id) !!}
             @else
                 {!! Form::hidden('employment_form_id',0) !!}
             @endif

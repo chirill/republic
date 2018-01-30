@@ -10,6 +10,7 @@
                         <th>Picture</th>
                         <th>Name</th>
                         <th>Email</th>
+                        <th>Location</th>
                         <th colspan="2">Status</th>
                         <th>Edit</th>
                         <th>Delete</th>
@@ -26,8 +27,10 @@
                                     no picture
                                 @endif
                             </td>
-                            <td>{{$user->name}}</td>
+                            <td><a href="{{route('users.show',$user->id)}}">{{$user->name}}</a></td>
                             <td>{{$user->email}}</td>
+
+                            <td>{{$user->location_id != null?$user->location->name:'locatia nu este setata'}}</td>
 
                                 @if(Auth::user()->id != $user->id)
                                     @if($user->status)

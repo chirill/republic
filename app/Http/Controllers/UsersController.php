@@ -90,6 +90,10 @@ class UsersController extends Controller
     public function show($id)
     {
         //
+        $user = User::findOrFail($id);
+
+        return view('admin.users.show',compact('user'));
+
     }
 
     /**
@@ -101,7 +105,7 @@ class UsersController extends Controller
     public function edit($id)
     {
         //
-        return view('admin.users.edit')->with('user',User::findOrFail($id));
+        return view('admin.users.edit')->with('user',User::findOrFail($id))->with('locations',\App\Location::pluck('name','id')->all());
     }
 
     /**
@@ -113,6 +117,7 @@ class UsersController extends Controller
      */
     public function update(UsersRequest $request, $id)
     {
+//        dd($request->all());
         $user = User::findOrFail($id);
         if ($request->hasFile('avatar')){
             $avatar = $request->avatar;
@@ -131,6 +136,7 @@ class UsersController extends Controller
         if ($request->password != null){
             $user->password = bcrypt($request->password);
         }
+        $user->location_id = $request->location_id;
         $user->save();
         Session::flash('success','Utilizatorul a fost updatat cu succes');
         return redirect()->route('users.index');
